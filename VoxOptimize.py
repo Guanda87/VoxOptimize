@@ -16,7 +16,7 @@ bl_info = {
     "author" : "Guanda",
     "description" : "optimize MagicaVoxel models",
     "blender" : (2, 80, 0),
-    "version" : (0, 0, 1),
+    "version" : (0, 0, 2),
     "location" : "View 3D > Sidebar > VoxOptimize",
     "warning" : "",
     "category" : "Mesh"
@@ -29,12 +29,16 @@ class VO_OT_Operator(bpy.types.Operator) :
     bl_label = "Vox Optimize"
     bl_description = "Optimize MagicaVoxel Models"
 
+
     def execute(self, context):
-        bpy.ops.object.editmode_toggle()
-        bpy.ops.mesh.select_all(action='SELECT')
-        bpy.ops.mesh.remove_doubles()
-        bpy.ops.object.editmode_toggle()
-        bpy.ops.object.shade_flat()
+        if bpy.context.selected_objects != []:
+            for obj in bpy.context.selected_objects:
+                if obj.type == 'MESH':
+                    bpy.ops.object.editmode_toggle()
+                    bpy.ops.mesh.select_all(action='SELECT')
+                    bpy.ops.mesh.remove_doubles()
+                    bpy.ops.object.editmode_toggle()
+                    bpy.ops.object.shade_flat()
         return {'FINISHED'} 
 
 class VO_PT_Panel(bpy.types.Panel):
